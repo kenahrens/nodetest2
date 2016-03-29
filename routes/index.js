@@ -25,6 +25,12 @@ router.get('/userlist', function(req, res) {
     });
 });
 
+/* GET Specific User page. */
+router.get('/user/:id', function(req, res) {
+  console.log('Getting user profile: ')
+  res.render('userprofile', {title: 'User Profile' });
+});
+
 /* GET New User page. */
 router.get('/newuser', function(req, res) {
     res.render('newuser', { title: 'Add New User' });
@@ -54,7 +60,7 @@ router.post('/adduser', function(req, res) {
         }
         else {
             // And forward to success page
-            res.redirect("userlist");
+            res.redirect("user/" + doc._id);
         }
     });
 });
