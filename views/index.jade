@@ -2,4 +2,9 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{title}, this demo app is based on #[a(href="http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/") this tutorial].
+  p Here are a couple of the links:
+    ul
+      li #[a(href="./helloworld") Classic Hello World Page]
+      li #[a(href="./newuser") Create a New User]
+      li #[a(href="./userlist") Get a List of Users]
