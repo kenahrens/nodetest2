@@ -32,6 +32,5 @@ node_modules
 # Config file
 config.json
 
-# New Relic files
-newrelic.js
+# New Relic log file
 newrelic_agent.log

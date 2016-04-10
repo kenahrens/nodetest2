@@ -9,3 +9,7 @@ Libraries used:
 * mongoose
 * jade
 * mocha (coming soon!)
+
+## New Relic Setup
+
+If you want to monitor this app with New Relic, you need to modify newrelic.js or set the proper environment variables such as NEW_RELIC_APP_NAME and NEW_RELIC_LICENSE_KEY.
