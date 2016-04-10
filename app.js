@@ -1,4 +1,4 @@
-var newrelic = require('newrelic');
+//var newrelic = require('newrelic');
 
 var express = require('express');
 var morgan = require('morgan');
