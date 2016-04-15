@@ -2,10 +2,10 @@ var supertest = require('supertest');
 
 describe('loading express', function() {
   var server;
-  beforeEach(function() {
+  before(function() {
     server = require('../bin/www');
   });
-  afterEach(function() {
+  after(function() {
     server.close();
   });
   it('GET /', function testSlash(done) {

@@ -6,10 +6,10 @@ var db = monk('localhost:27017/nodetest2');
 
 describe('testing db', function() {
   var server;
-  beforeEach(function() {
+  before(function() {
     server = require('../bin/www');
   });
-  afterEach(function() {
+  after(function() {
     server.close();
   });
   it('add a user', function testSlash(done) {
