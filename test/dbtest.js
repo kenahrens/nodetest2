@@ -4,6 +4,8 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/nodetest2');
 
+var server;
+
 describe('testing db', function() {
   var server;
   before(function() {

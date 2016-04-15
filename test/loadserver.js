@@ -1,4 +1,5 @@
 var supertest = require('supertest');
+var server;
 
 describe('loading express', function() {
   var server;
