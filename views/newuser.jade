@@ -3,7 +3,40 @@ extends layout
 block content
     h1= title
     form#formAddUser(name="adduser",method="post",action="/adduser")
-        input#inputUserName(type="text", placeholder="username", name="username")
-        input#inputUserEmail(type="text", placeholder="useremail", name="useremail")
-        button#btnSubmit(type="submit") submit
+      table
+        tr
+          th First Name
+          td
+            input#inputFirstName(type="text", placeholder="Oscar", name="fname")
+        tr
+          th Last Name
+          td
+            input#inputLastName(type="text", placeholder="Meyer", name="lname")
+        tr
+          th User Name
+          td
+            input#inputUserName(type="text", placeholder="hotdog5", name="username")
+        tr
+          th Email Address
+          td
+            input#inputUserEmail(type="text", placeholder="hotdog5@gmail.com", name="useremail")
+        tr
+          th Street Address
+          td
+            input#inputAddStreet(type="text", placeholder="123 Main Street", name="addstreet")
+        tr
+          th City 
+          td
+            input#inputAddCity(type="text", placeholder="Atlanta", name="addcity")
+        tr
+          th State 
+          td
+            input#inputAddState(type="text", placeholder="GA", name="addstate")
+        tr
+          th Zip 
+          td
+            input#inputAddZip(type="text", placeholder="30313", name="addzip")
+        tr
+          td
+            button#btnSubmit(type="submit") submit
 

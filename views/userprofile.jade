@@ -1,5 +1,26 @@
 extends layout
 
 block content
-    h1= title
-    p User Profile page
+    h1.
+      User Profile
+    table
+      each user, i in userlist
+        tr
+          th First Name
+          td= user.fname
+        tr
+          th Last Name
+          td= user.lname
+        tr
+          th User Name
+          td= user.username
+        tr
+          th User Email
+          td= user.email
+        tr
+          th Street Address
+          td= user.addstreet
+        tr
+          th City, State Zip
+          td
+            div #{user.addcity}, #{user.addstate} #{user.addzip}
