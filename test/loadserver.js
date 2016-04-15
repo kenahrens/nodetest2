@@ -1,4 +1,4 @@
-var request = require('supertest');
+var supertest = require('supertest');
 
 describe('loading express', function() {
   var server;
@@ -8,9 +8,14 @@ describe('loading express', function() {
   afterEach(function() {
     server.close();
   });
-  it('responds to /', function testSlash(done) {
-    request(server)
+  it('GET /', function testSlash(done) {
+    supertest(server)
       .get('/')
+      .expect(200, done);
+  });
+  it('GET /helloworld', function testSlash(done) {
+    supertest(server)
+      .get('/helloworld')
       .expect(200, done);
   });
 })
