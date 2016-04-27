@@ -17,12 +17,12 @@ describe('loading express', function() {
       .get('/')
       .expect(200, done);
   });
-  it('GET /helloworld', function testSlash(done) {
+  it('GET /helloworld', function testHello(done) {
     supertest(server)
       .get('/helloworld')
       .expect(200, done);
   });
-  it('add a user', function testSlash(done) {
+  it('adds a user', function testAdd(done) {
     supertest(server)
       .post('/adduser')
       .field('fname', 'Node')
@@ -34,5 +34,10 @@ describe('loading express', function() {
       .field('addstate', 'CA')
       .field('addzip', '90210')
       .expect(302, done);
+  });
+  it('gets the user list', function testList(done) {
+    supertest(server)
+      .get('/userlist')
+      .expect(200, done);
   });
 })
