@@ -24,7 +24,7 @@ describe('loading express', function() {
   });
   it('adds a user', function testAdd(done) {
     supertest(server)
-      .post('/adduser')
+      .post('/user/add')
       .field('fname', 'Node')
       .field('lname', 'Js')
       .field('userName', 'booyah')
