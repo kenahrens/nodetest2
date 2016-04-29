@@ -3,7 +3,24 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('need to specify the user');
+  res.redirect('/list');
+});
+
+
+/* GET Userlist page. */
+router.get('/list', function(req, res) {
+    var db = req.db;
+    var collection = db.get('usercollection');
+    collection.find({},{},function(e,docs){
+        res.render('userlist', {
+            'userlist' : docs
+        });
+    });
+});
+
+/* GET New User page. */
+router.get('/new', function(req, res) {
+    res.render('newuser', { title: 'Add New User' });
 });
 
 /* GET Specific User page. */
