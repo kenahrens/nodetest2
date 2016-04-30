@@ -2,7 +2,8 @@
 
 ## Functional Tests
 
-* loadserver.js - test the ability to get a URL and add a user
+* loadserver.js - basic test to load express
+* user.js - user add and list tests
 
 ## Gatling Load Scenario
 

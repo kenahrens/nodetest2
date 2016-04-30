@@ -1,6 +1,6 @@
 var supertest = require('supertest');
 
-describe('user tests', function() {
+describe('user functionality tests', function() {
   var server;
   beforeEach(function() {
     delete require.cache[require.resolve('../bin/www')];
@@ -9,6 +9,16 @@ describe('user tests', function() {
   afterEach(function() {
     server.close();
   });
+  it('redirects /user to /user/list', function(done) {
+    supertest(server)
+      .get('/user/')
+      .expect(302, done);
+  });
+  it('loads new user form', function(done) {
+    supertest(server)
+      .get('/user/new')
+      .expect(200, done);
+  })
   it('adds a user', function testAdd(done) {
     supertest(server)
       .post('/user/add')

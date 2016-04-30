@@ -1,6 +1,6 @@
 var supertest = require('supertest');
 
-describe('loading express', function() {
+describe('basic express test', function() {
   var server;
   beforeEach(function() {
     delete require.cache[require.resolve('../bin/www')];
