@@ -1,15 +1,11 @@
 var supertest = require('supertest');
 
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/nodetest2');
-
 describe('loading express', function() {
   var server;
-  before(function() {
+  beforeEach(function() {
     server = require('../bin/www');
   });
-  after(function() {
+  afterEach(function() {
     server.close();
   });
   it('GET /', function testSlash(done) {
