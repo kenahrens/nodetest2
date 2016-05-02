@@ -60,7 +60,7 @@ router.post('/add', function(req, res) {
     var collection = db.get('usercollection');
 
     // Submit to the DB
-    collection.insert({
+    var userInfo = {
         'fname': fname,
         'lname': lname,
         'username': userName,
@@ -69,7 +69,8 @@ router.post('/add', function(req, res) {
         'addcity': addcity,
         'addstate': addstate,
         'addzip': addzip
-    }, function (err, doc) {
+    }
+    collection.insert(userInfo, function (err, doc) {
         if (err) {
             // If it failed, return error
             res.send("There was a problem adding the information to the database.");
