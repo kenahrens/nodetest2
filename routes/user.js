@@ -6,6 +6,10 @@ router.get('/', function(req, res, next) {
   res.redirect('/list');
 });
 
+/* GET user search */
+router.get('/search', function(req, res, next) {
+    res.render('search', { title: 'Search for User' });
+})
 
 /* GET Userlist page. */
 router.get('/list', function(req, res) {
@@ -31,7 +35,6 @@ router.get('/:id', function(req, res) {
   var collection = db.get('usercollection');
   var search = { "_id": id};
   collection.find(search, {}, function(e, docs) {
-    console.log(docs);
     res.render('userprofile',
       {'userlist': docs });
   });
@@ -77,6 +80,33 @@ router.post('/add', function(req, res) {
             res.redirect(doc._id);
         }
     });
+});
+
+/* POST to search form */
+router.post('/runsearch', function(req, res) {
+    // Set our internal DB variable
+    var db = req.db;
+    var query = req.body.searchterm;
+    
+    var search = { "$or": [
+        { "fname": query },
+        { "lname": query },
+        { "username": query },
+        { "email": query },
+        { "addstreet": query },
+        { "addcity": query },
+        { "addstate": query },
+        { "addzip": query },
+        ] };
+    console.log();
+    console.log(search);
+    console.log();
+    var collection = db.get('usercollection');
+    collection.find(search, {}, function(e, docs) {
+        console.log(docs);
+        res.render('userlist',
+          {'userlist': docs });
+    });    
 });
 
 module.exports = router;

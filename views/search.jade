@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  form#formSearch(name="search",method="post",action="/user/runsearch")
+    p Search: 
+      input#inputQuery(type="text", placeholder="hotdog", name="searchterm")
+      button#btnSubmit(type="submit") submit
