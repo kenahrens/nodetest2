@@ -1,6 +1,8 @@
 var supertest = require('supertest');
 
 describe('user functionality tests', function() {
+  this.timeout(5000);
+
   var server;
   beforeEach(function() {
     delete require.cache[require.resolve('../bin/www')];
