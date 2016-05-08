@@ -1,4 +1,5 @@
 var express = require('express');
+var newrelic = require('newrelic');
 var router = express.Router();
 
 /* GET users listing. */
@@ -16,6 +17,11 @@ router.get('/list', function(req, res) {
     var db = req.db;
     var collection = db.get('usercollection');
     collection.find({},{},function(e,docs){
+        
+        // Add the user list count as custom metric
+        newrelic.recordMetric('Custom/User Count', docs.length);
+        console.log('User Count is ' + docs.length);
+
         res.render('userlist', {
             'userlist' : docs
         });
