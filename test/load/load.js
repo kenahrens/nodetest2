@@ -31,11 +31,27 @@ function get(endpoint) {
 
 // Add a User
 function addUser() {
-  var uri = 'http://' + hostname + port + '/user/add'
-  var options = {
-    'method': 'POST',
-    'uri': uri
-  }
+  const faker = require('faker');
+
+  var uri = 'http://' + hostname + port + '/user/add';
+  var form = { form: {
+      'fname': faker.name.firstName(),
+      'lname': faker.name.lastName(),
+      'username': faker.internet.userName(),
+      'useremail': faker.internet.email(),
+      'addstreet': faker.address.streetAddress(),
+      'addcity': faker.address.city(),
+      'addstate': faker.address.stateAbbr(),
+      'addzip': faker.address.zipCode()
+    }};
+  request.post(uri, form)
+    .on('response', function(response) {
+      responseCount++;
+      if (response.statusCode != 302) {
+        console.log('*** Error *** ' + response.statusCode);
+        console.log(response.body);
+      }
+    });
 }
 
 // Run the Search
@@ -44,13 +60,12 @@ function search() {
 }
 
 function loop() {
+  addUser();
   get('/');
   get('/helloworld');
   get('/user/new');
   get('/user/list');
   get('/user/search');
-
-
 
   var delay = Math.random() * 10000;
   setTimeout(loop, delay);
@@ -67,3 +82,4 @@ if (process.argv.length > 2) {
 }
 
 setTimeout(start(), 10);
+// addUser();
