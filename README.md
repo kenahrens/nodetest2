@@ -12,6 +12,7 @@ Primary libraries used:
 Testing via:
 * mocha - test framework
 * superagent - HTTP testing tools
+* faker - generate fake test data
 
 Monitoring via:
 * morgan - logging
