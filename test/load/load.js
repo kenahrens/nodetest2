@@ -2,14 +2,16 @@ const request = require('request');
 
 // Global variables
 var hostname = 'localhost';
+var port = ':3000'
 var requestCount = 0;
 var responseCount = 0;
 
 // Get a specific endpoint (with some randomness)
 function get(endpoint) {
-  var uri = 'http://' + hostname + ':3000' + endpoint;
+  var uri = 'http://' + hostname + port + endpoint;
   
-  if (Math.random() > 0.0) {
+  // Don't always issue the request, some randomness
+  if (Math.random() > 0.3) {
     request
       .get(uri)
       .on('response', function(response) {
@@ -29,7 +31,11 @@ function get(endpoint) {
 
 // Add a User
 function addUser() {
-
+  var uri = 'http://' + hostname + port + '/user/add'
+  var options = {
+    'method': 'POST',
+    'uri': uri
+  }
 }
 
 // Run the Search
@@ -46,7 +52,7 @@ function loop() {
 
 
 
-  var delay = Math.random() * 5000;
+  var delay = Math.random() * 10000;
   setTimeout(loop, delay);
 }
 
