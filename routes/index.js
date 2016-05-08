@@ -10,7 +10,6 @@ router.get('/', function(req, res, next) {
 
 /* GET Hello World page. */
 router.get('/helloworld', function(req, res) {
-    newrelic.setTransactionName('Hello');
     res.render('helloworld', { title: 'Hello, World!' });
 });
 

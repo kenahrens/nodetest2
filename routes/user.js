@@ -52,30 +52,21 @@ router.post('/add', function(req, res) {
     // Set our internal DB variable
     var db = req.db;
 
-    // Get our form values. These rely on the "name" attributes
-    var fname = req.body.fname;
-    var lname = req.body.lname;
-    var userName = req.body.username;
-    var userEmail = req.body.useremail;
-    var addstreet = req.body.addstreet;
-    var addcity = req.body.addcity;
-    var addstate = req.body.addstate;
-    var addzip = req.body.addzip;
-
     // Set our collection
     var collection = db.get('usercollection');
 
     // Submit to the DB
     var userInfo = {
-        'fname': fname,
-        'lname': lname,
-        'username': userName,
-        'email': userEmail,
-        'addstreet': addstreet,
-        'addcity': addcity,
-        'addstate': addstate,
-        'addzip': addzip
+        'fname': req.body.fname,
+        'lname': req.body.lname,
+        'username': req.body.username,
+        'email': req.body.useremail,
+        'addstreet': req.body.addstreet,
+        'addcity': req.body.addcity,
+        'addstate': req.body.addstate,
+        'addzip': req.body.addzip
     }
+    console.log(req.body);
     collection.insert(userInfo, function (err, doc) {
         if (err) {
             // If it failed, return error
