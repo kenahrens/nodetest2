@@ -87,11 +87,11 @@ function search(username) {
 
 function loop() {
   addUser();
-  // get('/');
-  // get('/helloworld');
-  // get('/user/new');
-  // get('/user/list');
-  // get('/user/search');
+  get('/');
+  get('/helloworld');
+  get('/user/new');
+  get('/user/list');
+  get('/user/search');
 
   var delay = Math.random() * 10000;
   setTimeout(loop, delay);
