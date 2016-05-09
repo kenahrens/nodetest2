@@ -39,4 +39,10 @@ describe('user functionality tests', function() {
       .get('/user/list')
       .expect(200, done);
   });
+  it('runs a search', function testSearch(done) {
+    supertest(server)
+      .post('/user/runsearch')
+      .send({'searchterm': 'booyah'})
+      .expect(200, done);
+  });
 });

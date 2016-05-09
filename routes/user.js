@@ -66,7 +66,9 @@ router.post('/add', function(req, res) {
         'addstate': req.body.addstate,
         'addzip': req.body.addzip
     }
-    console.log(req.body);
+
+    // console.log(req.body);
+    
     collection.insert(userInfo, function (err, doc) {
         if (err) {
             // If it failed, return error
@@ -96,12 +98,12 @@ router.post('/runsearch', function(req, res) {
         { "addstate": query },
         { "addzip": query },
         ] };
-    console.log();
-    console.log(search);
-    console.log();
+
+    // console.log(search);
+
     var collection = db.get('usercollection');
     collection.find(search, {}, function(e, docs) {
-        console.log(docs);
+        // console.log(docs);
         res.render('userlist',
           {'userlist': docs });
     });    
