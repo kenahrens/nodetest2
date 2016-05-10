@@ -13,8 +13,9 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/nodetest2');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var user = require('./routes/user');
+var api = require('./routes/api');
 
 var app = express();
 app.locals.newrelic = newrelic;
@@ -39,8 +40,9 @@ app.use(function(req,res,next){
     next();
 });
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/user', user);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
