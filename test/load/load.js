@@ -92,6 +92,7 @@ function loop() {
   get('/user/new');
   get('/user/list');
   get('/user/search');
+  get('/api/')
 
   var delay = Math.random() * 10000;
   setTimeout(loop, delay);
