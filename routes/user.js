@@ -1,6 +1,7 @@
 var express = require('express');
 var newrelic = require('newrelic');
 var router = express.Router();
+var request = require('request');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -9,23 +10,22 @@ router.get('/', function(req, res, next) {
 
 /* GET user search */
 router.get('/search', function(req, res, next) {
-    res.render('search', { title: 'Search for User' });
+  res.render('search', { title: 'Search for User' });
 })
 
 /* GET Userlist page. */
 router.get('/list', function(req, res) {
-    var db = req.db;
-    var collection = db.get('usercollection');
-    collection.find({},{},function(e,docs){
-        
-        // Add the user list count as custom metric
-        newrelic.recordMetric('Custom/User Count', docs.length);
-        console.log('User Count is ' + docs.length);
-
-        res.render('userlist', {
-            'userlist' : docs
-        });
-    });
+  
+  // Call the API
+  request.get('http://localhost:3000/api/users', function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      res.render('userlist', {
+        'userlist': JSON.parse(response.body)
+      });
+    } else {
+      res.status(500).send({error: 'API error'});
+    }
+  });
 });
 
 /* GET New User page. */
@@ -68,7 +68,7 @@ router.post('/add', function(req, res) {
     }
 
     // console.log(req.body);
-    
+
     collection.insert(userInfo, function (err, doc) {
         if (err) {
             // If it failed, return error

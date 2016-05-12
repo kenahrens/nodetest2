@@ -1,7 +1,7 @@
 var supertest = require('supertest');
 
-describe('basic api test', function() {
-  this.timeout(5000);
+describe('API Basic Test Scenarios', function() {
+  this.timeout(10000);
   
   var server;
   beforeEach(function() {
@@ -11,9 +11,14 @@ describe('basic api test', function() {
   afterEach(function() {
     server.close();
   });
-  it('GET /api', function testSlash(done) {
+  it('GET /api root should return 200', function(done) {
     supertest(server)
       .get('/api')
+      .expect(200, done);
+  });
+  it('GET all users', function(done) {
+    supertest(server)
+      .get('/api/users')
       .expect(200, done);
   });
 });
