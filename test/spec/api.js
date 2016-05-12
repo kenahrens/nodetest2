@@ -21,4 +21,22 @@ describe('API Basic Test Scenarios', function() {
       .get('/api/users')
       .expect(200, done);
   });
+  it('can add a new user', function(done) {
+    const faker = require('faker');
+    var username = faker.internet.userName();
+    var form = {
+      'fname': faker.name.firstName(),
+      'lname': faker.name.lastName(),
+      'username': username,
+      'useremail': faker.internet.email(),
+      'addstreet': faker.address.streetAddress(),
+      'addcity': faker.address.city(),
+      'addstate': faker.address.stateAbbr(),
+      'addzip': faker.address.zipCode()
+    };
+    supertest(server)
+      .post('/api/user')
+      .send(form)
+      .expect(200, done);
+  })
 });

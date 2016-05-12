@@ -22,16 +22,21 @@ describe('user functionality tests', function() {
       .expect(200, done);
   })
   it('adds a user', function testAdd(done) {
+    const faker = require('faker');
+    var username = faker.internet.userName();
+    var form = {
+      'fname': faker.name.firstName(),
+      'lname': faker.name.lastName(),
+      'username': username,
+      'useremail': faker.internet.email(),
+      'addstreet': faker.address.streetAddress(),
+      'addcity': faker.address.city(),
+      'addstate': faker.address.stateAbbr(),
+      'addzip': faker.address.zipCode()
+    };
     supertest(server)
       .post('/user/add')
-      .send({'fname': 'Node',
-        'lname': 'Js',
-        'username': 'booyah',
-        'useremail': 'booyah@gmail.com',
-        'addstreet': '100 Sunset Blvd',
-        'addcity': 'Beverly Hills',
-        'addstate': 'CA',
-        'addzip': '90210'})
+      .send(form)
       .expect(302, done);
   });
   it('gets the user list', function testList(done) {

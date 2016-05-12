@@ -51,6 +51,18 @@ router.post('/user', function(req, res) {
     'addstate': req.body.addstate,
     'addzip': req.body.addzip
   }
+
+  collection.insert(userInfo, function (err, doc) {
+    if (err) {
+      // If it failed, return error
+      res.send({ error: 'There was a problem adding the information to the database.' });
+    }
+    else {
+      console.log(userInfo.username + ' just added');
+      console.log(doc);
+      res.send( doc );
+    }
+  });
 });
 
 router.delete('/user/:id', function(req, res) {

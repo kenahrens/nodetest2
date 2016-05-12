@@ -20,7 +20,6 @@ router.get('/list', function(req, res) {
   var uri = 'http://localhost:3000/api/users';
   request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log('Web /list: Got API Response: ' + response.statusCode);
       res.render('userlist', {'users': JSON.parse(body)});
     } else {
       console.log('API Error!');
@@ -47,7 +46,6 @@ router.get('/:id', function(req, res) {
   var uri = 'http://localhost:3000/api/user/' + id;
   request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log('Web /list: Got API Response: ' + response.statusCode);
       res.render('userprofile', {'userlist': JSON.parse(body)});
     } else {
       console.log('API Error!');
@@ -58,14 +56,6 @@ router.get('/:id', function(req, res) {
       }
     }
   });
-
-  // var db = req.db;
-  // var collection = db.get('usercollection');
-  // var search = { "_id": id};
-  // collection.find(search, {}, function(e, docs) {
-  //   res.render('userprofile',
-  //     {'userlist': docs });
-  // });
 });
 
 /* POST to Add User Service */
@@ -73,8 +63,6 @@ router.post('/add', function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
-
-    // Set our collection
     var collection = db.get('usercollection');
 
     // Submit to the DB
@@ -89,19 +77,43 @@ router.post('/add', function(req, res) {
         'addzip': req.body.addzip
     }
 
+    // POST Options
+    var options = {
+      'method': 'POST',
+      'uri': 'http://localhost:3000/api/user/',
+      'json': true,
+      'body': userInfo
+    }
+
+    // Call the API
+    request(options, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        var id = response.body._id;
+        console.log('We are about to redirect to ' + id);
+        res.redirect(id);
+      } else {
+        console.log('API Error!');
+        if (error) {
+          throw(error);
+        } else {
+          throw(new Error(body));
+        }
+      }
+    });
+
     // console.log(req.body);
 
-    collection.insert(userInfo, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem adding the information to the database.");
-        }
-        else {
-            // And forward to success page
-            console.log('we are about to redirect to ' + doc._id);
-            res.redirect(doc._id);
-        }
-    });
+    // collection.insert(userInfo, function (err, doc) {
+    //     if (err) {
+    //         // If it failed, return error
+    //         res.send("There was a problem adding the information to the database.");
+    //     }
+    //     else {
+    //         // And forward to success page
+    //         console.log('we are about to redirect to ' + doc._id);
+    //         res.redirect(doc._id);
+    //     }
+    // });
 });
 
 /* POST to search form */
