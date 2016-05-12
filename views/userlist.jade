@@ -3,8 +3,8 @@ extends layout
 block content
     h1.
         User List
-    p User list count #{userlist.length}
+    p User list count #{users.length}
     ul
-        each user, i in userlist
+        each user, i in users
             li
                 a(href="./#{user._id}")= user.username

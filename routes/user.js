@@ -17,33 +17,55 @@ router.get('/search', function(req, res, next) {
 router.get('/list', function(req, res) {
   
   // Call the API
-  request.get('http://localhost:3000/api/users', function(error, response, body) {
+  var uri = 'http://localhost:3000/api/users';
+  request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      res.render('userlist', {
-        'userlist': JSON.parse(response.body)
-      });
+      console.log('Web /list: Got API Response: ' + response.statusCode);
+      res.render('userlist', {'users': JSON.parse(body)});
     } else {
-      res.status(500).send({error: 'API error'});
+      console.log('API Error!');
+      if (error) {
+        throw(error);
+      } else {
+        throw(new Error(body));
+      }
     }
   });
 });
 
 /* GET New User page. */
 router.get('/new', function(req, res) {
-    res.render('newuser', { title: 'Add New User' });
+  res.render('newuser', { title: 'Add New User' });
 });
 
 /* GET Specific User page. */
 router.get('/:id', function(req, res) {
-  console.log('Getting user profile: ' + req.params.id);
   var id = req.params.id;
-  var db = req.db;
-  var collection = db.get('usercollection');
-  var search = { "_id": id};
-  collection.find(search, {}, function(e, docs) {
-    res.render('userprofile',
-      {'userlist': docs });
+  console.log('WEB - get user profile: ' + id);
+  
+  // Call the API
+  var uri = 'http://localhost:3000/api/user/' + id;
+  request.get(uri, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      console.log('Web /list: Got API Response: ' + response.statusCode);
+      res.render('userprofile', {'userlist': JSON.parse(body)});
+    } else {
+      console.log('API Error!');
+      if (error) {
+        throw(error);
+      } else {
+        throw(new Error(body));
+      }
+    }
   });
+
+  // var db = req.db;
+  // var collection = db.get('usercollection');
+  // var search = { "_id": id};
+  // collection.find(search, {}, function(e, docs) {
+  //   res.render('userprofile',
+  //     {'userlist': docs });
+  // });
 });
 
 /* POST to Add User Service */
@@ -105,7 +127,7 @@ router.post('/runsearch', function(req, res) {
     collection.find(search, {}, function(e, docs) {
         // console.log(docs);
         res.render('userlist',
-          {'userlist': docs });
+          {'users': docs });
     });    
 });
 
