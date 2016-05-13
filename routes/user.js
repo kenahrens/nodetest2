@@ -100,20 +100,6 @@ router.post('/add', function(req, res) {
         }
       }
     });
-
-    // console.log(req.body);
-
-    // collection.insert(userInfo, function (err, doc) {
-    //     if (err) {
-    //         // If it failed, return error
-    //         res.send("There was a problem adding the information to the database.");
-    //     }
-    //     else {
-    //         // And forward to success page
-    //         console.log('we are about to redirect to ' + doc._id);
-    //         res.redirect(doc._id);
-    //     }
-    // });
 });
 
 /* POST to search form */
