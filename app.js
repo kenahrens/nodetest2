@@ -1,5 +1,6 @@
 var newrelic = require('newrelic');
 
+var config = require('config');
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
@@ -11,7 +12,7 @@ var bodyParser = require('body-parser');
 // New Code
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/nodetest2');
+var db = monk(config.get('dbConfig.mongo'));
 
 var index = require('./routes/index');
 var user = require('./routes/user');

@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec"
+    "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec",
+    "load": "node ./test/load/load.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
+    "config": "^1.20.1",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "express": "~4.13.1",
