@@ -2,6 +2,7 @@ var express = require('express');
 var newrelic = require('newrelic');
 var router = express.Router();
 var request = require('request');
+var config = require('config');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -15,9 +16,9 @@ router.get('/search', function(req, res, next) {
 
 /* GET Userlist page. */
 router.get('/list', function(req, res) {
-  
+
   // Call the API
-  var uri = 'http://localhost:3000/api/users';
+  var uri = config.get('apiConfig.user') + 'users/';
   request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       res.render('userlist', {'users': JSON.parse(body)});
@@ -41,9 +42,9 @@ router.get('/new', function(req, res) {
 router.get('/:id', function(req, res) {
   var id = req.params.id;
   console.log('WEB - get user profile: ' + id);
-  
+
   // Call the API
-  var uri = 'http://localhost:3000/api/user/' + id;
+  var uri = config.get('apiConfig.user') + 'user/' + id;
   request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       res.render('userprofile', {'userlist': JSON.parse(body)});
@@ -78,9 +79,10 @@ router.post('/add', function(req, res) {
     }
 
     // POST Options
+    var uri = config.get('apiConfig.user') + 'user/';
     var options = {
       'method': 'POST',
-      'uri': 'http://localhost:3000/api/user/',
+      'uri': uri,
       'json': true,
       'body': userInfo
     }
@@ -107,7 +109,7 @@ router.post('/runsearch', function(req, res) {
     // Set our internal DB variable
     var db = req.db;
     var query = req.body.searchterm;
-    
+
     var search = { "$or": [
         { "fname": query },
         { "lname": query },
@@ -126,7 +128,7 @@ router.post('/runsearch', function(req, res) {
         // console.log(docs);
         res.render('userlist',
           {'users': docs });
-    });    
+    });
 });
 
 module.exports = router;
