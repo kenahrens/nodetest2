@@ -12,7 +12,10 @@ var bodyParser = require('body-parser');
 // New Code
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk(config.get('dbConfig.mongo'));
+var dbconn = config.get('dbConfig.host') +
+  ':' + config.get('dbConfig.port') +
+  '/' + config.get('dbConfig.db');
+var db = monk(dbconn);
 
 var index = require('./routes/index');
 var user = require('./routes/user');

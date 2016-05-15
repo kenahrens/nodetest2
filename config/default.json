@@ -1,6 +1,8 @@
 {
   "dbConfig": {
-    "mongo": "localhost:27017/nodetest2"
+    "host": "localhost",
+    "port": "27017",
+    "db": "nodetest2"
   },
   "apiConfig": {
     "user": "http://localhost:3000/api/"
