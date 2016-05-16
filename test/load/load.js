@@ -1,15 +1,16 @@
 const request = require('request');
+const config = require('config');
 
 // Global variables
-var hostname = 'localhost';
-var port = ':3000'
+var webHost = config.get('loadConfig.webHost');
+var webPort = ':' + config.get('loadConfig.webPort')
 var requestCount = 0;
 var responseCount = 0;
 
 // Get a specific endpoint (with some randomness)
-function get(endpoint) {
-  var uri = 'http://' + hostname + port + endpoint;
-  
+function getWeb(endpoint) {
+  var uri = 'http://' + webHost + webPort + endpoint;
+
   // Don't always issue the request, some randomness
   if (Math.random() > 0.3) {
     request.get(uri)
@@ -35,7 +36,7 @@ function addUser() {
   // Keep the username, we run search after the user is added
   var username = faker.internet.userName();
 
-  var uri = 'http://' + hostname + port + '/user/add';
+  var uri = 'http://' + webHost + webPort + '/user/add';
   var form = { form: {
     'fname': faker.name.firstName(),
     'lname': faker.name.lastName(),
@@ -65,7 +66,7 @@ function addUser() {
 
 // Run the Search
 function search(username) {
-  var uri = 'http://' + hostname + port + '/user/runsearch';
+  var uri = 'http://' + webHost + webPort + '/user/runsearch';
   var form = { form: {
     'searchterm': username
   }};
@@ -87,26 +88,25 @@ function search(username) {
 
 function loop() {
   addUser();
-  get('/');
-  get('/helloworld');
-  get('/user/new');
-  get('/user/list');
-  get('/user/search');
-  get('/api/')
+  getWeb('/');
+  getWeb('/helloworld');
+  getWeb('/user/new');
+  getWeb('/user/list');
+  getWeb('/user/search');
 
   var delay = Math.random() * 10000;
   setTimeout(loop, delay);
 }
 
 function start() {
-  console.log('Running tests against: ' + hostname);
+  console.log('Running web tests against: ' + webHost);
   loop();
 }
 
 // Read in the command line argument for hostname
-if (process.argv.length > 2) {
-  hostname = process.argv[2];
-}
+// if (process.argv.length > 2) {
+//   hostname = process.argv[2];
+// }
 
-setTimeout(start(), 10);
+setTimeout(start(), 5000);
 // addUser();

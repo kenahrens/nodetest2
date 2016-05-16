@@ -5,6 +5,12 @@
     "db": "nodetest2"
   },
   "apiConfig": {
-    "user": "http://localhost:3000/api/"
+    "user": "http://localhost:3001/api/"
+  },
+  "loadConfig": {
+    "webHost": "localhost",
+    "webPort": "3000",
+    "apiHost": "localhost",
+    "apiPort": "3000"
   }
 }
