@@ -2,11 +2,11 @@ var supertest = require('supertest');
 
 describe('API Basic Test Scenarios', function() {
   this.timeout(10000);
-  
+
   var server;
   beforeEach(function() {
-    delete require.cache[require.resolve('../../bin/www')];
-    server = require('../../bin/www');
+    delete require.cache[require.resolve('../../bin/api')];
+    server = require('../../bin/api');
   });
   afterEach(function() {
     server.close();
