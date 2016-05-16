@@ -1,0 +1,11 @@
+{
+  "apiConfig": {
+    "user": "http://localhost:3001/api/"
+  },
+  "loadConfig": {
+    "webHost": "localhost",
+    "webPort": "3000",
+    "apiHost": "localhost",
+    "apiPort": "3001"
+  }
+}
