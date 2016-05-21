@@ -20,7 +20,10 @@
     },
     {
       "name": "Express Load",
-      "script": "./test/load/load.js"
+      "script": "./test/load/load.js",
+      "env": {
+        "LOAD_DELAY": "10000"
+      }
     }
   ]
 }

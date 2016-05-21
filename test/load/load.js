@@ -6,6 +6,7 @@ var webHost = config.get('loadConfig.webHost');
 var webPort = ':' + config.get('loadConfig.webPort')
 var requestCount = 0;
 var responseCount = 0;
+var delayRate = 10000; // Default delay rate is 10s
 
 // Get a specific endpoint (with some randomness)
 function getWeb(endpoint) {
@@ -94,12 +95,16 @@ function loop() {
   getWeb('/user/list');
   getWeb('/user/search');
 
-  var delay = Math.random() * 10000;
+  var delay = Math.random() * delayRate;
   setTimeout(loop, delay);
 }
 
 function start() {
   console.log('Running web tests against: ' + webHost);
+  if (process.env.LOAD_DELAY != null) {
+    delayRate = process.env.LOAD_DELAY;
+  }
+  console.log('Delay rate is: ' + delayRate);
   loop();
 }
 

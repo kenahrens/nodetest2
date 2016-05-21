@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "pm2 start process.json",
+    "start": "pm2 start ./process/process.json",
     "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec",
-    "load": "node ./test/load/load.js"
+    "loadDev": "pm2 start ./process/process-dev.json"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
