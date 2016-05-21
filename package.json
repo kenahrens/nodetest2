@@ -6,7 +6,7 @@
     "start": "pm2 start ./process/prod.json",
     "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec",
     "loadDev": "pm2 start ./process/dev.json",
-    "loadTest" "pm2 start ./process/test.json"
+    "loadTest": "pm2 start ./process/test.json"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
