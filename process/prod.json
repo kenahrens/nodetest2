@@ -3,6 +3,7 @@
     {
       "name": "Express API",
       "script": "./bin/api",
+      "instances": 4,
       "env": {
         "NODE_ENV": "pm2",
         "NEW_RELIC_APP_NAME": "Express API Prod",
@@ -12,6 +13,7 @@
     {
       "name": "Express Web",
       "script": "./bin/www",
+      "instances": 4,
       "env": {
         "NODE_ENV": "pm2",
         "NEW_RELIC_APP_NAME": "Express Web Prod",
