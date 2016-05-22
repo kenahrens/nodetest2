@@ -5,7 +5,7 @@
       "script": "./bin/api",
       "env": {
         "NODE_ENV": "pm2",
-        "NEW_RELIC_APP_NAME": "Express API Dev",
+        "NEW_RELIC_APP_NAME": "Express API Test",
         "PORT": "3001"
       }
     },
@@ -14,7 +14,7 @@
       "script": "./bin/www",
       "env": {
         "NODE_ENV": "pm2",
-        "NEW_RELIC_APP_NAME": "Express Web Dev",
+        "NEW_RELIC_APP_NAME": "Express Web Test",
         "PORT": "3000"
       }
     },

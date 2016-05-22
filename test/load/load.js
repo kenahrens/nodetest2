@@ -99,13 +99,17 @@ function loop() {
   setTimeout(loop, delay);
 }
 
-function start() {
-  console.log('Running web tests against: ' + webHost);
+function testStart() {
+  console.log('testStart: Running web tests against: ' + webHost);
+  loop();
+}
+
+function testInit() {
   if (process.env.LOAD_DELAY != null) {
     delayRate = process.env.LOAD_DELAY;
   }
-  console.log('Delay rate is: ' + delayRate);
-  loop();
+  console.log('testInit: Delay rate is: ' + delayRate);
+  setTimeout(testStart, delayRate);
 }
 
 // Read in the command line argument for hostname
@@ -113,5 +117,5 @@ function start() {
 //   hostname = process.argv[2];
 // }
 
-setTimeout(start(), 5000);
+testInit();
 // addUser();
