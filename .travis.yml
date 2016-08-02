@@ -1,10 +1,5 @@
-sudo: required
-dist: trusty
 language:
   - node_js
-  - cpp
-compiler:
-  - gcc
 node_js:
   - "5"
   - "5.1"
@@ -18,12 +13,3 @@ node_js:
   - "0.10"
 services:
   - mongodb
-matrix:
-  include:
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
