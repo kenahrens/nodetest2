@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./process/prod.json",
+    "start": "node ./bin/www",
+    "startpm2": "pm2 start ./process/prod.json",
     "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec",
     "loadDev": "pm2 start ./process/dev.json",
     "loadTest": "pm2 start ./process/test.json"
@@ -14,6 +15,7 @@
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "express": "~4.13.1",
+    "gc-profiler": "^1.3.1",
     "jade": "~1.11.0",
     "mongodb": "~1.4.0",
     "monk": "^1.0.1",

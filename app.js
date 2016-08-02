@@ -1,4 +1,9 @@
 var newrelic = require('newrelic');
+var profiler = require('gc-profiler');
+profiler.on('gc', function (info) {
+  newrelic.recordMetric('Custom/GC', info.duration / 1000)
+  newrelic.recordCustomEvent('GC', info)
+});
 
 var config = require('config');
 var express = require('express');
