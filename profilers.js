@@ -7,7 +7,7 @@ profiler.on('gc', function (info) {
   info.timestamp = info.date.getTime();
   delete info.date;
   newrelic.recordMetric('Custom/GC/' + info.type, info.duration / 1000);
-  newrelic.recordCustomEvent('GC', info);
+  newrelic.recordCustomEvent('NodeGC', info);
 });
 console.log('Memory Profiler Enabled');
 
@@ -29,12 +29,28 @@ var lastCpuValue;
 function pollCpu(agent) {
   return function cpuSampler() {
     try {
-      var cpu = process.cpuUsage(lastCpuValue);
-      var userCpuUsageInSeconds = cpu.user / 1e6;
-      var stats = agent.metrics.getOrCreateMetric('CPU/User Time');
-      stats.recordValue(userCpuUsageInSeconds);
-      // console.log('Recording CPU value: ' + userCpuUsageInSeconds);
-      lastCpuValue = cpu;
+      
+      // Get the current usage and subtract the last usage
+      var currentCpuValue = process.cpuUsage();
+      if (lastCpuValue != null) {
+        currentCpuValue.user = currentCpuValue.user - lastCpuValue.user;
+        currentCpuValue.system = currentCpuValue.system - lastCpuValue.system;
+      }
+
+      // Normalize the User and System CPU values
+      var statsUser = agent.metrics.getOrCreateMetric('CPU/User Time');
+      currentCpuValue.userCpu = currentCpuValue.user /= 1e6;
+      statsUser.recordValue(currentCpuValue.userCpu);
+      var statsSystem = agent.metrics.getOrCreateMetric('CPU/System Time');
+      currentCpuValue.systemCpu = currentCpuValue.system / 1e6;
+      statsSystem.recordValue(currentCpuValue.systemCpu);
+
+      // Save the metrics into Insights
+      currentCpuValue.pid = process.pid;
+      newrelic.recordCustomEvent('NodeCPU', currentCpuValue);
+      
+      // Backup the last value we'll need for the next reading
+      lastCpuValue = currentCpuValue;
     } catch (e) {
       console.log(e);
     }
