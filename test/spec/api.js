@@ -1,7 +1,7 @@
 var supertest = require('supertest');
 
 describe('API Basic Test Scenarios', function() {
-  this.timeout(10000);
+  this.timeout(15000);
 
   var server;
   beforeEach(function() {
