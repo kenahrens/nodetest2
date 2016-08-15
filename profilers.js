@@ -18,8 +18,8 @@ if (process.cpuUsage) {
   console.log('CPU Profiler Enabled');
   var cpuPoller = pollCpu(newrelic.agent);
   cpuPoller();
-  setInterval(cpuPoller, 5000);
-  // setInterval(cpuPoller, 60000);
+  // setInterval(cpuPoller, 5000);
+  setInterval(cpuPoller, 60000);
 } else {
   console.log('CPU usage available only in Node 6.1/0+, this is running: ' + process.version);
 }
