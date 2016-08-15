@@ -18,39 +18,37 @@ if (process.cpuUsage) {
   console.log('CPU Profiler Enabled');
   var cpuPoller = pollCpu(newrelic.agent);
   cpuPoller();
-  // setInterval(cpuPoller, 5000);
-  setInterval(cpuPoller, 60000);
+  setInterval(cpuPoller, 5000);
+  // setInterval(cpuPoller, 60000);
 } else {
   console.log('CPU usage available only in Node 6.1/0+, this is running: ' + process.version);
 }
 
 // Helper function to get the CPU Usage
-var lastCpuValue;
 function pollCpu(agent) {
+  var lastCpu;
   return function cpuSampler() {
     try {
       
       // Get the current usage and subtract the last usage
-      var currentCpuValue = process.cpuUsage();
-      if (lastCpuValue != null) {
-        currentCpuValue.user = currentCpuValue.user - lastCpuValue.user;
-        currentCpuValue.system = currentCpuValue.system - lastCpuValue.system;
-      }
+      var currCpu = process.cpuUsage();
+      var userCpuInSec = (lastCpu ? (currCpu.user - lastCpu.user) : currCpu.user) / 1e6;
+      var systemCpuInSec = (lastCpu ? (currCpu.system - lastCpu.system) : currCpu.system) / 1e6;
 
-      // Normalize the User and System CPU values
+      // Store the CPU User and System times into metrics
       var statsUser = agent.metrics.getOrCreateMetric('CPU/User Time');
-      currentCpuValue.userCpu = currentCpuValue.user /= 1e6;
-      statsUser.recordValue(currentCpuValue.userCpu);
+      statsUser.recordValue(userCpuInSec);
       var statsSystem = agent.metrics.getOrCreateMetric('CPU/System Time');
-      currentCpuValue.systemCpu = currentCpuValue.system / 1e6;
-      statsSystem.recordValue(currentCpuValue.systemCpu);
+      statsSystem.recordValue(systemCpuInSec);
 
-      // Save the metrics into Insights
-      currentCpuValue.pid = process.pid;
-      newrelic.recordCustomEvent('NodeCPU', currentCpuValue);
+      // Store the entire measurement as a custom event in Insights
+      currCpu.pid = process.pid;
+      currCpu.userCpu = userCpuInSec;
+      currCpu.systemCpu = systemCpuInSec;
+      newrelic.recordCustomEvent('NodeCPU', currCpu);
       
       // Backup the last value we'll need for the next reading
-      lastCpuValue = currentCpuValue;
+      lastCpu = currCpu;
     } catch (e) {
       console.log(e);
     }
