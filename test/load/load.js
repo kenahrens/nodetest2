@@ -6,14 +6,14 @@ var webHost = config.get('loadConfig.webHost');
 var webPort = ':' + config.get('loadConfig.webPort')
 var requestCount = 0;
 var responseCount = 0;
-var delayRate = 10000; // Default delay rate is 10s
+var delayRate = 1000; // Default delay rate is 10s
 
 // Get a specific endpoint (with some randomness)
-function getWeb(endpoint) {
+var getWeb = function(endpoint) {
   var uri = 'http://' + webHost + webPort + endpoint;
 
   // Don't always issue the request, some randomness
-  if (Math.random() > 0.3) {
+  if (Math.random() < getLoadLevel()) {
     request.get(uri)
       .on('response', function(response) {
         responseCount++;
@@ -31,7 +31,7 @@ function getWeb(endpoint) {
 }
 
 // Add a User
-function addUser() {
+var addUser = function() {
   const faker = require('faker');
 
   // Keep the username, we run search after the user is added
@@ -50,7 +50,7 @@ function addUser() {
   }};
 
   // Don't always issue the request, some randomness
-  if (Math.random() > 0.2) {
+  if (Math.random()  < getLoadLevel()) {
     request.post(uri, form)
       .on('response', function(response) {
         responseCount++;
@@ -66,14 +66,14 @@ function addUser() {
 }
 
 // Run the Search
-function search(username) {
+var search = function(username) {
   var uri = 'http://' + webHost + webPort + '/user/runsearch';
   var form = { form: {
     'searchterm': username
   }};
 
   // Don't always issue the request, some randomness
-  if (Math.random() > 0.5) {
+  if (Math.random()  < getLoadLevel()) {
 
     request.post(uri, form)
       .on('response', function(response) {
@@ -87,16 +87,27 @@ function search(username) {
   }
 }
 
-function loop() {
+var loop = function() {
+  
+  // Add User sometimes calls search right after
   addUser();
+
+  // These are generic get requests
   getWeb('/');
-  getWeb('/helloworld');
   getWeb('/user/new');
   getWeb('/user/list');
   getWeb('/user/search');
 
-  var delay = Math.random() * delayRate;
-  setTimeout(loop, delay);
+  // var delay = Math.random() * delayRate;
+  setTimeout(loop, delayRate);
+}
+
+// This helper function determines the load level
+// The load level is used for randomness
+var getLoadLevel = function() {
+  var minute = new Date().getMinutes();
+  var loadLevel = (minute + 40) / 100;
+  return loadLevel;
 }
 
 function testStart() {
@@ -112,10 +123,4 @@ function testInit() {
   setTimeout(testStart, delayRate);
 }
 
-// Read in the command line argument for hostname
-// if (process.argv.length > 2) {
-//   hostname = process.argv[2];
-// }
-
 testInit();
-// addUser();

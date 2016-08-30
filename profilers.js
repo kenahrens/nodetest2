@@ -6,10 +6,11 @@ if (process.memoryUsage) {
   console.log('Memory Usage Profiler Enabled');
   setInterval(function sampleMemory() {
     var stats = process.memoryUsage();
+    stats.pid = process.pid;
     newrelic.recordCustomEvent('NodeMemory', stats);
   }, 5000);
 } else {
-  console.log('Memory usage available only in Node 6.1/0+, this is running: ' + process.version);
+  console.log('Memory usage available only in Node 0.1+, this is running: ' + process.version);
 }
 
 // CPU usage via custom event
@@ -22,16 +23,16 @@ if (process.cpuUsage) {
 
   setInterval(function sampleCpu() {
     // get CPU usage since the process started
-    var usage = process.cpuUsage()
+    var usage = process.cpuUsage();
 
     if (lastUsage) {
       // calculate percentage
-      var intervalInMicros = interval * 1000
-      var userPercent = ((usage.user - lastUsage.user) / intervalInMicros) * 100
-      newrelic.recordCustomEvent('NodeCPU', { userPercent: userPercent })  
+      var intervalInMicros = interval * 1000;
+      var userPercent = ((usage.user - lastUsage.user) / intervalInMicros) * 100;
+      newrelic.recordCustomEvent('NodeCPU', { userPercent: userPercent, pid: process.pid });
     }
 
-    lastUsage = usage
+    lastUsage = usage;
   }, interval)
 } else {
   console.log('CPU usage available only in Node 6.1/0+, this is running: ' + process.version);
