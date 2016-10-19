@@ -71,7 +71,7 @@ router.post('/add', function(req, res) {
         'fname': req.body.fname,
         'lname': req.body.lname,
         'username': req.body.username,
-        'email': req.body.useremail,
+        'useremail': req.body.useremail,
         'addstreet': req.body.addstreet,
         'addcity': req.body.addcity,
         'addstate': req.body.addstate,
