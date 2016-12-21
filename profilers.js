@@ -38,15 +38,16 @@ if (process.cpuUsage) {
   console.log('CPU usage available only in Node 6.1/0+, this is running: ' + process.version);
 }
 
-// GC profiling via custom events
-profiler.on('gc', function (info) {
-  info.pid = process.pid;
-  info.timestamp = info.date.getTime();
-  delete info.date;
-  newrelic.recordMetric('Custom/GC/' + info.type, info.duration / 1000);
-  newrelic.recordCustomEvent('NodeGC', info);
-});
-console.log('GC Profiler Enabled');
+// No longer needed as of New Relic 1.35.1 these metrics are available with @newrelic/native-metrics
+// // GC profiling via custom events
+// profiler.on('gc', function (info) {
+//   info.pid = process.pid;
+//   info.timestamp = info.date.getTime();
+//   delete info.date;
+//   newrelic.recordMetric('Custom/GC/' + info.type, info.duration / 1000);
+//   newrelic.recordCustomEvent('NodeGC', info);
+// });
+// console.log('GC Profiler Enabled');
 
 // // CPU usage via custom metric
 // if (process.cpuUsage) {
