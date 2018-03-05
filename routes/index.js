@@ -23,15 +23,21 @@ router.get('/caught', function(req, res) {
     throw('catastrophic error is happening in the system');
   } catch (errMsg) {
 
-    var err = new Error(errMsg);
-    err.status = 501;
+    // Create the error
+    var evalError = new EvalError(errMsg);
+    evalError.status = 501;
 
-    newrelic.noticeError(err);
+    // Capture the error in NR
+    newrelic.noticeError(evalError);
+
+    // Set the response code
+    res.status(evalError.status);
+
+    // Send the response
     var rsp = {
       message: errMsg,
-      error: err
+      error: evalError
     }
-    res.status(err.status);
     res.render('error', rsp);
   }
 });
