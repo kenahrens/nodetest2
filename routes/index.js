@@ -20,16 +20,19 @@ router.get('/error', function(req, res) {
 
 router.get('/caught', function(req, res) {
   try {
-    
-    if (Math.random() > 0.5) {
-      throw('catastrophic error is happening in the system');
-    } else {
-      res.render('helloworld', { title: 'Caught Error Page' } );
-    }
+    throw('catastrophic error is happening in the system');
+  } catch (errMsg) {
 
-  } catch (e) {
-    newrelic.noticeError(e);
-    res.render('error', e);
+    var err = new Error(errMsg);
+    err.status = 501;
+
+    newrelic.noticeError(err);
+    var rsp = {
+      message: errMsg,
+      error: err
+    }
+    res.status(err.status);
+    res.render('error', rsp);
   }
 });
 
