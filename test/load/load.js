@@ -8,6 +8,12 @@ var requestCount = 0;
 var responseCount = 0;
 var delayRate = 1000; // Default delay rate is 10s
 
+var checkCount = function() {
+  if ((requestCount % 100) == 0) {
+    console.log('Got responses to ' + responseCount + ' of ' + requestCount + ' requests');
+  }
+}
+
 // Get a specific endpoint (with some randomness)
 var getWeb = function(endpoint) {
   var uri = 'http://' + webHost + webPort + endpoint;
@@ -24,10 +30,22 @@ var getWeb = function(endpoint) {
       })
     requestCount++;
   }
+  checkCount();
+}
 
-  if ((requestCount % 100) == 0) {
-    console.log('Got responses to ' + responseCount + ' of ' + requestCount + ' requests');
+// Get a page that might error
+var getErrorWeb = function(endpoint) {
+  var uri = 'http://' + webHost + webPort + endpoint;
+
+  // Don't always issue the request, some randomness
+  if (Math.random() < getLoadLevel()) {
+    request.get(uri)
+      .on('response', function(response) {
+        responseCount++;
+      });
+    requestCount++;
   }
+  checkCount();
 }
 
 // Add a User
@@ -97,6 +115,10 @@ var loop = function() {
   getWeb('/user/new');
   getWeb('/user/list');
   getWeb('/user/search');
+
+  // Hit the error pages
+  getErrorWeb('/error');
+  getErrorWeb('/caught');
 
   // var delay = Math.random() * delayRate;
   setTimeout(loop, delayRate);
