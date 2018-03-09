@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "startpm2": "pm2 start ./process/prod.json",
-    "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/spec",
+    "test": "./node_modules/mocha/bin/mocha --exit --reporter spec ./test/spec",
     "loadDev": "pm2 start ./process/dev.json",
     "loadTest": "pm2 start ./process/test.json"
   },
@@ -29,6 +29,6 @@
     "chai": "^4.1.0",
     "faker": "^3.1.0",
     "mocha": "^5.0.0",
-    "supertest": "^1.2.0"
+    "supertest": "^3.0.0"
   }
 }
