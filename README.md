@@ -31,7 +31,7 @@ $ pm2 list
 
 Primary libraries used:
 * express - for web and api framework
-* jade - UI templates
+* pug - UI templates
 * mongodb - native db calls
 * request - api client calls to backends
  
