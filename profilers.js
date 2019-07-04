@@ -1,5 +1,4 @@
 var newrelic = require('newrelic');
-var profiler = require('gc-profiler');
 
 // Memory usage via custom event
 if (process.memoryUsage) {
