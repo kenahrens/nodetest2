@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        role: master
+        tier: backend
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodetest2-www
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodetest2-www
+  template:
+    metadata:
+      labels:
+        app: nodetest2-www
+    spec:
+      containers:
+      - name: nodetest2-www
+        image: kenahrens/nodetest2-www
+        imagePullPolicy: Never
+        livenessProbe:
+          httpGet:
+            path: /helloworld
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NODE_ENV
+          value: k8s
+        - name: NEW_RELIC_APP_NAME
+          value: "Node Test WWW"
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic
+              key: NEW_RELIC_LICENSE_KEY
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodetest2-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodetest2-api
+  template:
+    metadata:
+      labels:
+        app: nodetest2-api
+    spec:
+      containers:
+      - name: nodetest2-api
+        image: kenahrens/nodetest2-api
+        imagePullPolicy: Never
+        livenessProbe:
+          httpGet:
+            path: /helloworld
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NODE_ENV
+          value: k8s
+        - name: NEW_RELIC_APP_NAME
+          value: "Node Test API"
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic
+              key: NEW_RELIC_LICENSE_KEY
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodetest2-load
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodetest2-load
+  template:
+    metadata:
+      labels:
+        app: nodetest2-load
+    spec:
+      containers:
+      - name: nodetest2-load
+        image: kenahrens/nodetest2-load
+        imagePullPolicy: Never
+        env:
+        - name: NODE_ENV
+          value: k8s

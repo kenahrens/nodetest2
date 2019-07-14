@@ -1,0 +1,16 @@
+{
+  "dbConfig": {
+    "host": "mongodb",
+    "port": "27017",
+    "db": "nodetest2"
+  },
+  "apiConfig": {
+    "user": "http://nodetest2-api:3000/api/"
+  },
+  "loadConfig": {
+    "webHost": "nodetest2-www",
+    "webPort": "3000",
+    "apiHost": "nodetest2-api",
+    "apiPort": "3000"
+  }
+}
