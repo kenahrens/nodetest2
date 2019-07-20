@@ -6,6 +6,31 @@ router.get('/', function(req, res) {
   res.json({ message: 'api response' });
 });
 
+router.post('/search', function(req, res) {
+  // Set our internal DB variable
+  var db = req.db;
+  var query = req.body.searchterm;
+
+  var search = { "$or": [
+      { "fname": query },
+      { "lname": query },
+      { "username": query },
+      { "email": query },
+      { "addstreet": query },
+      { "addcity": query },
+      { "addstate": query },
+      { "addzip": query },
+      ] };
+
+  // console.log(search);
+
+  var collection = db.get('usercollection');
+  collection.find(search, {}, function(e, docs) {
+      // console.log(docs);
+      res.json({'users': docs });
+  });
+});
+
 // Get a list of all the users
 router.get('/users', function(req, res) {
 
@@ -13,11 +38,12 @@ router.get('/users', function(req, res) {
   var db = req.db;
   var collection = db.get('usercollection');
 
+  console.log('In /users route, calling DB');
   collection.find({},{},function(e,docs){
         
     // Add the user list count as custom metric
-    newrelic.recordMetric('Custom/User Count', docs.length);
-    console.log('User Count is ' + docs.length);
+    // newrelic.recordMetric('Custom/User Count', docs.length);
+    console.log('In /users route, user count is ' + docs.length);
     res.json(docs);
   });
 });
@@ -60,7 +86,7 @@ router.post('/user', function(req, res) {
     else {
       console.log(userInfo.username + ' just added');
       console.log(doc);
-      res.send( doc );
+      res.json( doc );
     }
   });
 });

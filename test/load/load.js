@@ -6,7 +6,7 @@ var webHost = config.get('loadConfig.webHost');
 var webPort = ':' + config.get('loadConfig.webPort')
 var requestCount = 0;
 var responseCount = 0;
-var delayRate = 1000; // Default delay rate is 10s
+var delayRate = 5000;
 
 var checkCount = function() {
   if ((requestCount % 100) == 0) {
@@ -38,7 +38,8 @@ var getErrorWeb = function(endpoint) {
   var uri = 'http://' + webHost + webPort + endpoint;
 
   // Don't always issue the request, some randomness
-  if (Math.random() < getLoadLevel()) {
+  // 10 * random() should reduce the errors to 1/10th
+  if ((10 * Math.random()) < getLoadLevel()) {
     request.get(uri)
       .on('response', function(response) {
         responseCount++;

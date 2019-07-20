@@ -20,5 +20,22 @@ exports.config = {
      * production applications.
      */
     level: 'info'
-  }
+  },
+
+  /**
+   * Controls the method of cross agent tracing in the agent.
+   * Distributed tracing lets you see the path that a request takes through your
+   * distributed system. Enabling distributed tracing changes the behavior of some
+   * New Relic features, so carefully consult the transition guide before you enable
+   * this feature: https://docs.newrelic.com/docs/transition-guide-distributed-tracing
+   * Default is false.
+   */
+  distributed_tracing: {
+    /**
+     * Enables/disables distributed tracing.
+     *
+     * @env NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+     */
+    enabled: true
+  },
 }

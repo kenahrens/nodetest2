@@ -8,7 +8,7 @@ spec:
       app: mongodb
       role: master
       tier: backend
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -45,7 +45,7 @@ spec:
             path: /helloworld
             port: 3000
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 30
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -82,10 +82,10 @@ spec:
         imagePullPolicy: Never
         livenessProbe:
           httpGet:
-            path: /helloworld
+            path: /api/
             port: 3000
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 30
         ports:
         - containerPort: 3000
           protocol: TCP

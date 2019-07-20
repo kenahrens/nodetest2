@@ -21,14 +21,15 @@ router.get('/list', function(req, res) {
   var uri = config.get('apiConfig.user') + 'users/';
   request.get(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
+      console.log('Received GET response from /api/users/', body.length);
       res.render('userlist', {'users': JSON.parse(body)});
     } else {
-      console.log('API Error!');
-      if (error) {
-        throw(error);
-      } else {
-        throw(new Error(body));
+      // Send the error response
+      var rsp = {
+        message: 'API Error',
+        error: error
       }
+      res.render('error', rsp);
     }
   });
 });
@@ -46,15 +47,16 @@ router.get('/:id', function(req, res) {
   // Call the API
   var uri = config.get('apiConfig.user') + 'user/' + id;
   request.get(uri, function(error, response, body) {
+    console.log('Received GET response from /api/user/' + id, body.length);
     if (!error && response.statusCode === 200) {
       res.render('userprofile', {'userlist': JSON.parse(body)});
     } else {
-      console.log('API Error!');
-      if (error) {
-        throw(error);
-      } else {
-        throw(new Error(body));
+      // Send the error response
+      var rsp = {
+        message: 'API Error',
+        error: error
       }
+      res.render('error', rsp);
     }
   });
 });
@@ -62,11 +64,7 @@ router.get('/:id', function(req, res) {
 /* POST to Add User Service */
 router.post('/add', function(req, res) {
 
-    // Set our internal DB variable
-    var db = req.db;
-    var collection = db.get('usercollection');
-
-    // Submit to the DB
+    // Submit to the API
     var userInfo = {
         'fname': req.body.fname,
         'lname': req.body.lname,
@@ -89,46 +87,53 @@ router.post('/add', function(req, res) {
 
     // Call the API
     request(options, function(error, response, body) {
+      console.log('Received POST response from /api/user/', body);
       if (!error && response.statusCode === 200) {
         var id = response.body._id;
         console.log('We are about to redirect to ' + id);
         res.redirect(id);
       } else {
-        console.log('API Error!');
-        if (error) {
-          throw(error);
-        } else {
-          throw(new Error(body));
+        // Send the error response
+        var rsp = {
+          message: 'API Error',
+          error: error
         }
+        res.render('error', rsp);
       }
     });
 });
 
 /* POST to search form */
 router.post('/runsearch', function(req, res) {
-    // Set our internal DB variable
-    var db = req.db;
-    var query = req.body.searchterm;
 
-    var search = { "$or": [
-        { "fname": query },
-        { "lname": query },
-        { "username": query },
-        { "email": query },
-        { "addstreet": query },
-        { "addcity": query },
-        { "addstate": query },
-        { "addzip": query },
-        ] };
+  // POST Options
+  console.log('Searching for', req.body.searchterm);
+  var uri = config.get('apiConfig.user') + 'search/';
+  var reqBody = {
+    'searchterm': req.body.searchterm
+  }
+  var options = {
+    'method': 'POST',
+    'uri': uri,
+    'json': true,
+    'body': reqBody
+  }
 
-    // console.log(search);
-
-    var collection = db.get('usercollection');
-    collection.find(search, {}, function(e, docs) {
-        // console.log(docs);
-        res.render('userlist',
-          {'users': docs });
-    });
+  // Call the API
+  request(options, function(error, response, body) {
+    console.log('Received POST response from /api/search/', body);
+    if (!error && response.statusCode === 200) {
+      console.log('Response from ')
+      res.render('userlist', {'users': body});
+    } else {
+      // Send the error response
+      var rsp = {
+        message: 'API Error',
+        error: error
+      }
+      res.render('error', rsp);
+    }
+  });
 });
 
 module.exports = router;
