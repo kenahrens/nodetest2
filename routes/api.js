@@ -44,8 +44,13 @@ router.get('/users', function(req, res) {
     // Add the user list count as custom metric
     // newrelic.recordMetric('Custom/User Count', docs.length);
     if (e != null) {
-      console.log('In /users route, user count is ' + docs.length);
-      res.json(docs);
+      if (docs != null) {
+        console.log('In /users route, user count is ' + docs.length);
+        res.json(docs);
+      } else {
+        console.error('Empty set from database');
+        res.json('[]');
+      }
     } else {
       console.error(e);
       res.json('[]');

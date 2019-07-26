@@ -8,7 +8,7 @@ spec:
       app: mongodb
       role: master
       tier: backend
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -123,3 +123,5 @@ spec:
         env:
         - name: NODE_ENV
           value: k8s
+        - name: LOAD_DELAY
+          value: "2500"

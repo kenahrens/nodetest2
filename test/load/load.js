@@ -28,6 +28,9 @@ var getWeb = function(endpoint) {
           console.log(response.body);
         }
       })
+      .on('error', function(err) {
+        console.error(err);
+      })
     requestCount++;
   }
   checkCount();
@@ -43,6 +46,9 @@ var getErrorWeb = function(endpoint) {
     request.get(uri)
       .on('response', function(response) {
         responseCount++;
+      })
+      .on('error', function(err) {
+        console.error(err);
       });
     requestCount++;
   }
@@ -79,7 +85,10 @@ var addUser = function() {
         } else {
           search(username);
         }
-    });
+      })
+      .on('error', function(err) {
+        console.error(err);
+      });
     requestCount++;
   }
 }
@@ -101,6 +110,9 @@ var search = function(username) {
           console.log('*** Search Error ***' + response.statusCode);
           console.log(response.body);
         }
+      })
+      .on('error', function(err) {
+        console.error(err);
       });
     requestCount++;
   }
